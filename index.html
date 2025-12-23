@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoëlMagique - Créateur de Vœux</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Sélecteur de langue -->
+            <div class="language-selector">
+                <button class="lang-btn" id="lang-toggle">
+                    <i class="fas fa-language"></i>
+                    <span id="current-lang">FR</span>
+                </button>
+            </div>
+            
+            <h1><i class="fas fa-tree"></i> NoëlMagique <i class="fas fa-gift"></i></h1>
+            <p id="header-text">Créez et partagez vos vœux de Noël personnalisés</p>
+            
+            <!-- Timer de Noël -->
+            <div class="christmas-timer">
+                <div class="timer-title" id="timer-title">Temps restant jusqu'à Noël</div>
+                <div class="timer-display">
+                    <div class="timer-unit">
+                        <div class="timer-number" id="days">00</div>
+                        <div class="timer-label" id="days-label">Jours</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-number" id="hours">00</div>
+                        <div class="timer-label" id="hours-label">Heures</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-number" id="minutes">00</div>
+                        <div class="timer-label" id="minutes-label">Minutes</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-number" id="seconds">00</div>
+                        <div class="timer-label" id="seconds-label">Secondes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Étape 1 : Création du vœu par l'expéditeur -->
+            <div class="step active" id="step1">
+                <h2><i class="fas fa-user"></i> <span id="step1-title">Créez vos vœux</span></h2>
+                <div class="form-group">
+                    <label for="sender-name" id="sender-label">Votre prénom :</label>
+                    <input type="text" id="sender-name" placeholder="Ex: Marie, Jean, Sophie..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="wish-type" id="wish-type-label">Type de vœux :</label>
+                    <select id="wish-type">
+                        <option value="custom" id="custom-option">Je crée mes propres vœux</option>
+                        <option value="predefined" id="predefined-option">Je choisis parmi des vœux prédéfinis</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="custom-wish-section">
+                    <label for="custom-wish" id="custom-wish-label">Vos vœux de Noël :</label>
+                    <textarea id="custom-wish" placeholder="Ex: Je te souhaite un joyeux Noël rempli de bonheur, d'amour et de paix. Que cette période festive t'apporte joie et réconfort..."></textarea>
+                </div>
+                
+                <div class="form-group" id="predefined-wishes-section" style="display: none;">
+                    <label id="select-wish-label">Sélectionnez vos vœux :</label>
+                    <div class="wishes-grid" id="wishes-grid">
+                        <!-- Les vœux prédéfinis seront générés par JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-primary" id="create-wish">
+                        <span id="create-button">Créer et partager</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Étape 2 : Affichage pour l'expéditeur -->
+            <div class="step" id="step2">
+                <h2><i class="fas fa-gift"></i> <span id="step2-title">Votre vœu est prêt !</span></h2>
+                
+                <div class="wish-card" id="wish-card-preview">
+                    <div class="decorations" id="decorations">
+                        <!-- Les décorations seront générées par JavaScript -->
+                    </div>
+                    
+                    <h3 id="christmas-title">Joyeux Noël !</h3>
+                    
+                    <div class="to" id="preview-to">
+                        <span id="for-text">Pour :</span> <span id="preview-recipient">[Destinataire]</span>
+                    </div>
+                    
+                    <div class="message" id="preview-wish">
+                        [Vœux de Noël s'afficheront ici]
+                    </div>
+                    
+                    <div class="from" id="preview-from">
+                        <span id="from-text">De la part de :</span> <span id="preview-sender">[Expéditeur]</span>
+                    </div>
+                </div>
+                
+                <!-- Instructions pour le destinataire -->
+                <div style="text-align: center; margin: 20px 0; padding: 15px; background: #f0f8ff; border-radius: 10px; border-left: 4px solid var(--primary-red);">
+                    <p style="color: var(--dark-red); font-weight: bold; margin-bottom: 10px;">
+                        <i class="fas fa-info-circle"></i> Comment ça marche ?
+                    </p>
+                    <p style="color: #333; font-size: 0.95rem;">
+                        Votre destinataire recevra un lien. Quand il l'ouvrira, il devra simplement entrer <strong>son prénom</strong> pour voir votre message personnalisé !
+                    </p>
+                </div>
+                
+                <!-- Bouton Télécharger PNG -->
+                <div class="buttons" style="justify-content: center; margin-top: 20px;">
+                    <button class="btn-download" id="download-png">
+                        <i class="fas fa-download"></i> <span id="download-text">Télécharger en image</span>
+                    </button>
+                </div>
+                
+                <div class="share-options">
+                    <a href="#" class="share-btn facebook" id="share-facebook">
+                        <i class="fab fa-facebook-f"></i> <span id="facebook-text">Partager sur Facebook</span>
+                    </a>
+                    <a href="#" class="share-btn twitter" id="share-twitter">
+                        <i class="fab fa-twitter"></i> <span id="twitter-text">Partager sur Twitter</span>
+                    </a>
+                    <a href="#" class="share-btn whatsapp" id="share-whatsapp">
+                        <i class="fab fa-whatsapp"></i> <span id="whatsapp-text">Partager sur WhatsApp</span>
+                    </a>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-outline" id="back-to-step1">
+                        <i class="fas fa-arrow-left"></i> <span id="modify-text">Modifier</span>
+                    </button>
+                    <button class="btn-secondary" id="new-wish">
+                         <span id="new-wish-text">Nouveau vœu</span><i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Étape 3 : Pour le destinataire (quand il reçoit le lien) -->
+            <div class="step" id="step3">
+                <h2><i class="fas fa-user-friends"></i> <span id="step3-title">Bonjour !</span></h2>
+                
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <p style="font-size: 1.1rem; color: var(--dark-green);">
+                        <i class="fas fa-gift" style="color: var(--primary-red);"></i>
+                        <span id="greeting-text">Quelqu'un a pensé à vous pour Noël !</span>
+                    </p>
+                    <p style="color: #666; margin-top: 10px;">
+                        <span id="instruction-text">Entrez votre prénom pour découvrir le message</span>
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="recipient-name" id="recipient-label">Votre prénom :</label>
+                    <input type="text" id="recipient-name" placeholder="Ex: Pierre, Emma, Thomas..." required>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-primary" id="view-wish">
+                        <span id="view-button">Voir le message</span> 
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Étape 4 : Affichage pour le destinataire -->
+            <div class="step" id="step4">
+                <h2><i class="fas fa-heart"></i> <span id="step4-title">Vœux de Noël pour vous</span></h2>
+                
+                <div class="wish-card" id="wish-card-final">
+                    <div class="decorations" id="final-decorations">
+                        <!-- Les décorations seront générées par JavaScript -->
+                    </div>
+                    
+                    <h3 id="final-christmas-title">Joyeux Noël !</h3>
+                    
+                    <div class="to" id="final-to">
+                        <span id="final-for-text">Pour :</span> <span id="final-recipient">[Vous]</span>
+                    </div>
+                    
+                    <div class="message" id="final-wish">
+                        [Message de Noël]
+                    </div>
+                    
+                    <div class="from" id="final-from">
+                        <span id="final-from-text">De la part de :</span> <span id="final-sender">[Expéditeur]</span>
+                    </div>
+                </div>
+                
+                <!-- Bouton Télécharger PNG pour le destinataire -->
+                <div class="buttons" style="justify-content: center; margin-top: 20px;">
+                    <button class="btn-download" id="download-png-final">
+                        <i class="fas fa-download"></i> <span id="download-final-text">Télécharger en image</span>
+                    </button>
+                </div>
+                
+                <div class="buttons" style="justify-content: center;">
+                    <button class="btn-secondary" id="create-response">
+                        <i class="fas fa-reply"></i> <span id="response-text">Créer mon vœux</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="contact-info">
+            <p class="location"><i class="fas fa-map-marker-alt"></i> Lomé, Togo</p>
+            <p class="whatsapp-contact">
+                <i class="fab fa-whatsapp"></i> WhatsApp: +228 96 17 39 53
+            </p>
+            <p><span id="made-with">Fait avec</span> <i class="fas fa-heart" style="color:#ff4757;"></i> <span id="for-christmas">pour Noël</span></p>
+            <p id="share-magic">Partagez la magie de Noël avec vos proches !</p>
+        </div>
+    </div>
+
+    <!-- Bibliothèque pour générer PNG -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
